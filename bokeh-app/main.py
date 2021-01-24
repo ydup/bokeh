@@ -9,7 +9,6 @@ from bokeh.models import CustomJS, Select
 from bokeh.io import curdoc, show
 from bokeh.models import ColumnDataSource, Grid, ImageURL, LinearAxis, Plot, Range1d
 
-
 def create_pannel(id):
     # time series data
     ecg_y = np.loadtxt(join(dirname(__file__), 'data/ts_%s.txt'%id))  # ecg values
@@ -34,7 +33,7 @@ def create_pannel(id):
     ydr = Range1d(start=1500, end=0)
 
     pannel_nAF = figure(title='Symmetrized Grad-CAM of non-AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
-    pannel_nAF.image_url(url=["https://www.hualigs.cn/image/600d806837694.jpg"], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
+    pannel_nAF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_nAF_%s.jpg"%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
     source_triad_img = ColumnDataSource(data=dict(x=[0], y=[0]))
     pannel_nAF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
     pannel_nAF.xaxis.visible = False
@@ -43,7 +42,7 @@ def create_pannel(id):
     pannel_nAF.ygrid.visible = False
 
     pannel_AF = figure(title='Symmetrized Grad-CAM of AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
-    pannel_AF.image_url(url=["https://cdn3.iconfinder.com/data/icons/line/36/dog_head-512.png"], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left") # https://yadongz.com/static/img/ecg/gcam_AF_%s.png'%id
+    pannel_AF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_AF_%s.jpg"%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left") # https://yadongz.com/static/img/ecg/gcam_AF_%s.png'%id
     pannel_AF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
     pannel_AF.xaxis.visible = False
     pannel_AF.xgrid.visible = False
