@@ -42,7 +42,7 @@ def create_pannel(id):
     pannel_nAF.ygrid.visible = False
 
     pannel_AF = figure(title='Symmetrized Grad-CAM of AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
-    pannel_AF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_AF_%s.jpg"%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left") # https://yadongz.com/static/img/ecg/gcam_AF_%s.png'%id
+    pannel_AF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_AF_%s.jpg"%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
     pannel_AF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
     pannel_AF.xaxis.visible = False
     pannel_AF.xgrid.visible = False
@@ -83,10 +83,10 @@ def create_pannel(id):
 time_index_1, delay_1, pannel_ts_1, pannel_AF_1, pannel_nAF_1 = create_pannel('AF')
 inputs_1 = column(time_index_1, delay_1)
 column_1 = column(inputs_1, pannel_ts_1, pannel_AF_1, pannel_nAF_1, width=400)
-'''
+
 time_index_2, delay_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2 = create_pannel('nAF')
 inputs_2 = column(time_index_2, delay_2)
 column_2 = column(inputs_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2, width=400)
-'''
-curdoc().add_root(column_1)
+
+curdoc().add_root(row(column_1, column_2))
 curdoc().title = "Inpretable Visualization"
