@@ -34,7 +34,7 @@ def create_pannel(id):
     ydr = Range1d(start=1500, end=0)
 
     pannel_nAF = figure(title='Symmetrized Grad-CAM of non-AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
-    pannel_nAF.image_url(url=["https://cdn3.iconfinder.com/data/icons/line/36/dog_head-512.png"], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
+    pannel_nAF.image_url(url=["http://yadongz.com/static/img/default-image.jpg"], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
     source_triad_img = ColumnDataSource(data=dict(x=[0], y=[0]))
     pannel_nAF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
     pannel_nAF.xaxis.visible = False
@@ -59,7 +59,7 @@ def create_pannel(id):
 
         start = time_index.value
         gap = delay.value
-        # source_triad_img.data = dict(x=[start], y=[gap-1])
+        source_triad_img.data = dict(x=[start], y=[gap-1])
 
         right_bound = len(ecg_y)-(3-1)*gap
         if start + 1> right_bound:
