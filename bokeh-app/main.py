@@ -8,7 +8,6 @@ from bokeh.plotting import figure
 from bokeh.models import CustomJS, Select
 from bokeh.io import curdoc, show
 from bokeh.models import ColumnDataSource, Grid, ImageURL, LinearAxis, Plot, Range1d
-import imageio
 
 
 def create_pannel(id):
