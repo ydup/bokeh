@@ -1,18 +1,9 @@
-# Running a bokeh server with Binder
+# Anomaly Detection in Time Series with Triadic Motif Fields and Application in Atrial Fibrillation ECG Classification
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/binder-examples/bokeh/master?urlpath=/proxy/5006/bokeh-app)
+__Image-based temporal pattern recognition and clinical interpretation__
 
-This repository demonstrates how to run a Bokeh server from within Binder. To do so, we did the following things:
+Yadong Zhang and Xin Chen
 
-1. Created a `bokeh-app` directory in the repo with a `main.py` file in it. This is the application that will be served. We've added the
-   [Bokeh weather example](https://github.com/bokeh/bokeh/tree/master/examples/app/weather) as a demo. 
-2. Installed `bokeh` for the viz and `jupyter_server_proxy` which we'll use to direct people to the port on which Bokeh runs. See `environment.yml`.
-3. Added a custom server extension (`bokehserverextension.py`) that will be run to direct people to the Bokeh app (which is run on a port)
-4. Used `postBuild` to enable the `jupyter_server_proxy` extension, then set up and enable our custom server extension for Bokeh. 
-5. Created a Binder link that uses `urlpath` to point users to the port on which the Bokeh server will run:
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app)
 
-   ```
-   https://mybinder.org/v2/gh/binder-examples/bokeh/master?urlpath=/proxy/5006/bokeh-app
-   ```
-   
-When people click on the Binder link, they should be directed to the running Bokeh app.
+https://mybinder.org/v2/gh/binder-examples/bokeh/master?urlpath=/proxy/5006/bokeh-app
