@@ -89,4 +89,4 @@ inputs_2 = column(time_index_2, delay_2)
 column_2 = column(inputs_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2, width=400)
 
 curdoc().add_root(row(column_1, column_2))
-curdoc().title = "Inpretable Visualization"
+curdoc().title = "Anomaly Detection in Time Series with Triadic Motif Fields"
