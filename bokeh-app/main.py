@@ -1,18 +1,11 @@
 from os.path import join, dirname
-import datetime
-''' 
-    bokeh serve sliders.py
-'''
 import numpy as np
-import pandas as pd
 from flask import Flask, render_template
 
-from bokeh.io import curdoc
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, Slider, TextInput
 from bokeh.plotting import figure
 
-from bokeh.io import show
 from bokeh.models import CustomJS, Select
 from bokeh.io import curdoc, show
 from bokeh.models import ColumnDataSource, Grid, ImageURL, LinearAxis, Plot, Range1d
