@@ -1,6 +1,5 @@
 from os.path import join, dirname
 import numpy as np
-from flask import Flask, render_template
 
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, Slider, TextInput
