@@ -1,89 +1,104 @@
 from os.path import join, dirname
 import datetime
-
+''' 
+    bokeh serve sliders.py
+'''
+import numpy as np
 import pandas as pd
-from scipy.signal import savgol_filter
+from flask import Flask, render_template
 
 from bokeh.io import curdoc
-from bokeh.layouts import row, column
-from bokeh.models import ColumnDataSource, DataRange1d, Select
-from bokeh.palettes import Blues4
+from bokeh.layouts import column, row
+from bokeh.models import ColumnDataSource, Slider, TextInput
 from bokeh.plotting import figure
 
-STATISTICS = ['record_min_temp', 'actual_min_temp', 'average_min_temp', 'average_max_temp', 'actual_max_temp', 'record_max_temp']
+from bokeh.io import show
+from bokeh.models import CustomJS, Select
+from bokeh.io import curdoc, show
+from bokeh.models import ColumnDataSource, Grid, ImageURL, LinearAxis, Plot, Range1d
 
-def get_dataset(src, name, distribution):
-    df = src[src.airport == name].copy()
-    del df['airport']
-    df['date'] = pd.to_datetime(df.date)
-    # timedelta here instead of pd.DateOffset to avoid pandas bug < 0.18 (Pandas issue #11925)
-    df['left'] = df.date - datetime.timedelta(days=0.5)
-    df['right'] = df.date + datetime.timedelta(days=0.5)
-    df = df.set_index(['date'])
-    df.sort_index(inplace=True)
-    if distribution == 'Smoothed':
-        window, order = 51, 3
-        for key in STATISTICS:
-            df[key] = savgol_filter(df[key], window, order)
+def create_pannel(id):
+    # time series data
+    ecg_y = np.loadtxt(join(dirname(__file__), 'data/ts_%s.txt'%id))  # ecg values
+    ecg_x = np.arange(len(ecg_y))  # ecg time index
+    source_ts = ColumnDataSource(data=dict(x=ecg_x, y=ecg_y))  # time series source
+    source_triad = ColumnDataSource(data=dict(x=[0,100,200], y=[0,0,0]))  # triadic motif source
+    # 
+    pannel_ts = figure(plot_height=200, plot_width=400, title="ECG time series (AF)" if id=='AF' else "ECG time series (non-AF)",
+                tools="crosshair,pan,reset,save,wheel_zoom",
+                x_range=[0, len(ecg_x)], y_range=[min(ecg_y)-0.5, max(ecg_y)+0.5])
 
-    return ColumnDataSource(data=df)
+    pannel_ts.line('x', 'y', source=source_ts, line_width=1, line_color='black')
+    pannel_ts.line('x', 'y', source=source_triad, line_width=1, line_color='red')
+    pannel_ts.scatter('x', 'y', source=source_triad, line_width=3, line_color='red')
 
-def make_plot(source, title):
-    plot = figure(x_axis_type="datetime", plot_width=800, tools="", toolbar_location=None)
-    plot.title.text = title
+    
+    D = 3
+    shape = np.array([len(range(1, (len(ecg_y)-1)//(D-1) + 1)), len(range(0, len(ecg_y)-(D-1)*1)), D])
+    
+    # Symmetrized Grad-CAM
+    xdr = Range1d(start=0, end=3000)
+    ydr = Range1d(start=1500, end=0)
 
-    plot.quad(top='record_max_temp', bottom='record_min_temp', left='left', right='right',
-              color=Blues4[2], source=source, legend="Record")
-    plot.quad(top='average_max_temp', bottom='average_min_temp', left='left', right='right',
-              color=Blues4[1], source=source, legend="Average")
-    plot.quad(top='actual_max_temp', bottom='actual_min_temp', left='left', right='right',
-              color=Blues4[0], alpha=0.5, line_color="black", source=source, legend="Actual")
+    pannel_nAF = figure(title='Symmetrized Grad-CAM of non-AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
+    pannel_nAF.image_url(url=['http://yadongz.com/static/img/ecg/gcam_nAF_%s.png'%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
+    source_triad_img = ColumnDataSource(data=dict(x=[0], y=[0]))
+    pannel_nAF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
+    pannel_nAF.xaxis.visible = False
+    pannel_nAF.xgrid.visible = False
+    pannel_nAF.yaxis.visible = False
+    pannel_nAF.ygrid.visible = False
 
-    # fixed attributes
-    plot.xaxis.axis_label = None
-    plot.yaxis.axis_label = "Temperature (F)"
-    plot.axis.axis_label_text_font_style = "bold"
-    plot.x_range = DataRange1d(range_padding=0.0)
-    plot.grid.grid_line_alpha = 0.3
+    pannel_AF = figure(title='Symmetrized Grad-CAM of AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
+    pannel_AF.image_url(url=['http://yadongz.com/static/img/ecg/gcam_AF_%s.png'%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
+    pannel_AF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
+    pannel_AF.xaxis.visible = False
+    pannel_AF.xgrid.visible = False
+    pannel_AF.yaxis.visible = False
+    pannel_AF.ygrid.visible = False
 
-    return plot
+    # Set up widgets
+    time_index = Slider(title="x", value=0, start=0, end=shape[1], step=1, width=400)
+    delay = Slider(title="y", value=1, start=1, end=shape[0], step=1, width=400)
 
-def update_plot(attrname, old, new):
-    city = city_select.value
-    plot.title.text = "Weather data for " + cities[city]['title']
+    # Set up callbacks
+    def update_data(attrname, old, new):
 
-    src = get_dataset(df, cities[city]['airport'], distribution_select.value)
-    source.data.update(src.data)
+        start = time_index.value
+        gap = delay.value
+        source_triad_img.data = dict(x=[start], y=[gap-1])
 
-city = 'Austin'
-distribution = 'Discrete'
+        right_bound = len(ecg_y)-(3-1)*gap
+        if start + 1> right_bound:
+            start = shape[1] - start - 1
+            gap = shape[0] - gap + 1
+        
+        # Get the current slider values
+        triad_x = np.arange(start, start+gap*3, gap)
+        # Generate the new curve
+        triad_y = ecg_y[triad_x]
 
-cities = {
-    'Austin': {
-        'airport': 'AUS',
-        'title': 'Austin, TX',
-    },
-    'Boston': {
-        'airport': 'BOS',
-        'title': 'Boston, MA',
-    },
-    'Seattle': {
-        'airport': 'SEA',
-        'title': 'Seattle, WA',
-    }
-}
+        source_triad.data = dict(x=triad_x, y=triad_y)
 
-city_select = Select(value=city, title='City', options=sorted(cities.keys()))
-distribution_select = Select(value=distribution, title='Distribution', options=['Discrete', 'Smoothed'])
+    for w in [time_index, delay]:
+        w.on_change('value', update_data)
+    
+    return time_index, delay, pannel_ts, pannel_AF, pannel_nAF
+    
+    # return pannel_ts
 
-df = pd.read_csv(join(dirname(__file__), 'data/2015_weather.csv'))
-source = get_dataset(df, cities[city]['airport'], distribution)
-plot = make_plot(source, "Weather data for " + cities[city]['title'])
 
-city_select.on_change('value', update_plot)
-distribution_select.on_change('value', update_plot)
+time_index_1, delay_1, pannel_ts_1, pannel_AF_1, pannel_nAF_1 = create_pannel('AF')
+inputs_1 = column(time_index_1, delay_1)
+column_1 = column(inputs_1, pannel_ts_1, pannel_AF_1, pannel_nAF_1, width=400)
 
-controls = column(city_select, distribution_select)
+'''
+pannel_ts = create_pannel('AF')
+curdoc().add_root(pannel_ts)
+'''
+time_index_2, delay_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2 = create_pannel('nAF')
+inputs_2 = column(time_index_2, delay_2)
+column_2 = column(inputs_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2, width=400)
 
-curdoc().add_root(row(plot, controls))
-curdoc().title = "Weather"
+curdoc().add_root(row(column_1, column_2))
+curdoc().title = "Inpretable Visualization"
