@@ -90,9 +90,6 @@ def create_pannel(id):
     
     return time_index, delay, pannel_ts, pannel_AF, pannel_nAF
     
-    # return pannel_ts
-
-
 time_index_1, delay_1, pannel_ts_1, pannel_AF_1, pannel_nAF_1 = create_pannel('AF')
 time_index_2, delay_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2 = create_pannel('nAF')
 
