@@ -94,20 +94,14 @@ def create_pannel(id):
 
 
 time_index_1, delay_1, pannel_ts_1, pannel_AF_1, pannel_nAF_1 = create_pannel('AF')
-inputs_1 = column(time_index_1, delay_1)
-column_1 = column(inputs_1, pannel_ts_1, pannel_AF_1, pannel_nAF_1, width=400)
-
 time_index_2, delay_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2 = create_pannel('nAF')
-inputs_2 = column(time_index_2, delay_2)
-column_2 = column(inputs_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2, width=400)
-
 
 layout = layout([
     [time_index_1, time_index_2],
     [delay_1, delay_2],
     [pannel_ts_1, pannel_ts_2],
-    [pannel_AF_1, pannel_AF_2],
-    [pannel_nAF_1, pannel_nAF_2]
+    [pannel_nAF_1, pannel_nAF_2],
+    [pannel_AF_1, pannel_AF_2]
 ], sizing_mode='scale_width')
 
 curdoc().add_root(layout)
