@@ -34,11 +34,11 @@ def create_pannel(id):
     shape = np.array([len(range(1, (len(ecg_y)-1)//(D-1) + 1)), len(range(0, len(ecg_y)-(D-1)*1)), D])
     
     # Symmetrized Grad-CAM
-    xdr = Range1d(start=0, end=3000)
-    ydr = Range1d(start=1500, end=0)
+    xdr = Range1d(start=0, end=shape[1])
+    ydr = Range1d(start=shape[0]+1, end=1)
 
     pannel_nAF = figure(title='Symmetrized Grad-CAM of non-AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
-    pannel_nAF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_nAF_%s.jpg"%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
+    pannel_nAF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_nAF_%s.jpg"%id], x=0, y=shape[0]+1, w=shape[1], h=shape[0], anchor="bottom_left")
     source_triad_img = ColumnDataSource(data=dict(x=[0], y=[0]))
     pannel_nAF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
     pannel_nAF.xaxis.visible = False
@@ -51,7 +51,7 @@ def create_pannel(id):
     pannel_nAF.toolbar.active_tap = None
 
     pannel_AF = figure(title='Symmetrized Grad-CAM of AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
-    pannel_AF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_AF_%s.jpg"%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
+    pannel_AF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_AF_%s.jpg"%id], x=0, y=shape[0]+1, w=shape[1], h=shape[0], anchor="bottom_left")
     pannel_AF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
     pannel_AF.xaxis.visible = False
     pannel_AF.xgrid.visible = False
