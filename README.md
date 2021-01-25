@@ -8,5 +8,5 @@ Yadong Zhang and Xin Chen
 Paper: https://arxiv.org/abs/2012.04936
 
 [__Online demo for image-based temporal pattern recognition and clinical interpretation__: ](
-https://mybinder.org/v2/gh/binder-examples/bokeh/master?urlpath=/proxy/5006/bokeh-app
-)https://mybinder.org/v2/gh/binder-examples/bokeh/master?urlpath=/proxy/5006/bokeh-app
+https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app
+)https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app
