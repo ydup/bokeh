@@ -27,6 +27,8 @@ def create_pannel(id):
     pannel_ts.toolbar.active_drag = None
     pannel_ts.toolbar.active_scroll = None
     pannel_ts.toolbar.active_tap = None
+    pannel_ts.yaxis.visible = False
+    pannel_ts.ygrid.visible = False
     
     D = 3
     shape = np.array([len(range(1, (len(ecg_y)-1)//(D-1) + 1)), len(range(0, len(ecg_y)-(D-1)*1)), D])
