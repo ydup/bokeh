@@ -24,6 +24,9 @@ def create_pannel(id):
     pannel_ts.line('x', 'y', source=source_triad, line_width=1, line_color='red')
     pannel_ts.scatter('x', 'y', source=source_triad, line_width=3, line_color='red')
 
+    pannel_ts.toolbar.active_drag = None
+    pannel_ts.toolbar.active_scroll = None
+    pannel_ts.toolbar.active_tap = None
     
     D = 3
     shape = np.array([len(range(1, (len(ecg_y)-1)//(D-1) + 1)), len(range(0, len(ecg_y)-(D-1)*1)), D])
