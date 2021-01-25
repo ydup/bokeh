@@ -1,7 +1,7 @@
 from os.path import join, dirname
 import numpy as np
 
-from bokeh.layouts import column, row
+from bokeh.layouts import column, row, layout
 from bokeh.models import ColumnDataSource, Slider, TextInput
 from bokeh.plotting import figure
 
@@ -88,5 +88,14 @@ time_index_2, delay_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2 = create_pannel('n
 inputs_2 = column(time_index_2, delay_2)
 column_2 = column(inputs_2, pannel_ts_2, pannel_AF_2, pannel_nAF_2, width=400)
 
-curdoc().add_root(row(column_1, column_2))
+
+layout = layout([
+    [time_index_1, time_index_2],
+    [delay_1, delay_2],
+    [pannel_ts_1, pannel_ts_2],
+    [pannel_AF_1, pannel_AF_2],
+    [pannel_nAF_1, pannel_nAF_2]
+], sizing_mode='scale_width')
+
+curdoc().add_root(layout)
 curdoc().title = "Anomaly Detection in Time Series with Triadic Motif Fields"
