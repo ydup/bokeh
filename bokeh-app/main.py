@@ -41,6 +41,10 @@ def create_pannel(id):
     pannel_nAF.yaxis.visible = False
     pannel_nAF.ygrid.visible = False
 
+    pannel_nAF.toolbar.active_drag = None
+    pannel_nAF.toolbar.active_scroll = None
+    pannel_nAF.toolbar.active_tap = None
+
     pannel_AF = figure(title='Symmetrized Grad-CAM of AF class', x_range=xdr, y_range=ydr, plot_width=400, plot_height=200)
     pannel_AF.image_url(url=["https://raw.githubusercontent.com/ydup/picgo/main/img/gcam_AF_%s.jpg"%id], x=0, y=shape[0], w=shape[1], h=shape[0], anchor="bottom_left")
     pannel_AF.scatter('x', 'y', source=source_triad_img, size=15, marker='circle_x',line_color="white", fill_color="none", alpha=1)
@@ -48,6 +52,10 @@ def create_pannel(id):
     pannel_AF.xgrid.visible = False
     pannel_AF.yaxis.visible = False
     pannel_AF.ygrid.visible = False
+
+    pannel_AF.toolbar.active_drag = None
+    pannel_AF.toolbar.active_scroll = None
+    pannel_AF.toolbar.active_tap = None
 
     # # Set up widgets
     time_index = Slider(title="x", value=0, start=0, end=shape[1], step=1, width=400)
