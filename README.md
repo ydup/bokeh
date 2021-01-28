@@ -12,6 +12,11 @@ For more details, please read the [preprint](https://arxiv.org/abs/2012.04936), 
 https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app
 ):[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app)
 
+Local: (bokeh==2.2.3)
+```shell
+bokeh serve --show bokeh-app
+```
+
 Screenshot:
 
 ![img](app_bokeh.png)
