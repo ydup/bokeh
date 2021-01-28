@@ -6,7 +6,7 @@
 
 Yadong Zhang and Xin Chen
 
-[Preprint](https://arxiv.org/abs/2012.04936): [![arXiv](https://img.shields.io/badge/arXiv-2012.04936-b31b1b.svg)](https://arxiv.org/abs/2012.04936)
+For more details, please read the [preprint](https://arxiv.org/abs/2012.04936), Anomaly Detection in Time Series with Triadic Motif Fields and Application in Atrial Fibrillation ECG Classification. [![arXiv](https://img.shields.io/badge/arXiv-2012.04936-b31b1b.svg)](https://arxiv.org/abs/2012.04936) 
 
 [Online demo](
 https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app
@@ -14,7 +14,7 @@ https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app
 
 Screenshot:
 
-![img](screen.png)
+![img](app_bokeh.png)
 
 Cite our work with:
 ```latex
