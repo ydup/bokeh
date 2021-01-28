@@ -1,4 +1,4 @@
-# An Interactive Demo of the Interpretation of the Anomaly DDetection with Triadic Motif Fields.
+# An Interactive Demo of the Interpretation of the Anomaly Detection with Triadic Motif Fields.
 
 [![arXiv](https://img.shields.io/badge/arXiv-2012.04936-b31b1b.svg)](https://arxiv.org/abs/2012.04936)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ydup/bokeh/master?urlpath=/proxy/5006/bokeh-app)
